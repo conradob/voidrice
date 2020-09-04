@@ -31,6 +31,11 @@ _comp_options+=(globdots)		# Include hidden files.
 # Load Git completion
 fpath=("${XDG_CONFIG_HOME:-$HOME/.config}/zsh" $fpath)
 
+setopt prompt_subst
+GIT_PS1_SHOWDIRTYSTATE=true
+source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/git-prompt.sh"
+export RPROMPT=$'%B%{$fg[red]%}[%{$fg[magenta]%}$(__git_ps1 "%s")%{$fg[red]%}]%{$reset_color%}'
+
 # vi mode
 bindkey -v
 export KEYTIMEOUT=1
