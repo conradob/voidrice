@@ -2,7 +2,7 @@
 
 # Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
-PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+PS1="%B%{$fg[red]%}[%{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
 
@@ -10,6 +10,11 @@ stty stop undef		# Disable ctrl-s to freeze terminal.
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.cache/zsh/history
+
+# Appends every command to the history file once it is executed
+setopt inc_append_history
+# Reloads the history whenever you use it
+setopt share_history
 
 # Load aliases and shortcuts if existent.
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/shortcutrc" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/shortcutrc"
@@ -22,6 +27,14 @@ zstyle ':completion:*' menu select
 zmodload zsh/complist
 compinit
 _comp_options+=(globdots)		# Include hidden files.
+
+# Load Git completion
+fpath=("${XDG_CONFIG_HOME:-$HOME/.config}/zsh" $fpath)
+
+setopt prompt_subst
+GIT_PS1_SHOWDIRTYSTATE=true
+source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/git-prompt.sh"
+export RPROMPT=$'%B%{$fg[red]%}[%{$fg[magenta]%}$(__git_ps1 "%s")%{$fg[red]%}]%{$reset_color%}'
 
 # vi mode
 bindkey -v
@@ -76,6 +89,35 @@ bindkey '^[[P' delete-char
 # Edit line in vim with ctrl-e:
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^e' edit-command-line
+
+# asdf version manager
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/asdf/asdf.sh" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf/asdf.sh"
+
+## Added by Master Password
+mpw() {
+    _copy() {
+        if hash pbcopy 2>/dev/null; then
+            pbcopy
+        elif hash xclip 2>/dev/null; then
+            xclip -selection clip
+        else
+            cat; echo 2>/dev/null
+            return
+        fi
+        echo >&2 "Copied!"
+    }
+
+    # Empty the clipboard
+    :| _copy 2>/dev/null
+
+    # Ask for the user's name and password if not yet known.
+    # MPW_FULLNAME=${MPW_FULLNAME:-$(ask 'Your Full Name:')}
+
+    # Start Master Password and copy the output.
+    printf %s "$(MPW_FULLNAME=$MPW_FULLNAME command mpw "$@")" | _copy
+}
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Load syntax highlighting; should be last.
 source /usr/share/zsh/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh 2>/dev/null

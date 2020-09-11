@@ -40,4 +40,42 @@ alias \
 	magit="nvim -c MagitOnly" \
 	ref="shortcuts >/dev/null; source ${XDG_CONFIG_HOME:-$HOME/.config}/shortcutrc ; source ${XDG_CONFIG_HOME:-$HOME/.config}/zshnameddirrc" \
 	weath="less -S ${XDG_DATA_HOME:-$HOME/.local/share}/weatherreport" \
-	tmux="tmux -f ${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf" \
+	tmux="tmux -f ${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.conf"
+
+# ls alias
+alias ls="exa" \
+  l="exa" \
+  lg="exa -la --group-directories-first" \
+  ll="exa -l" \
+  la="exa -a" \
+  lha="exa -lha" \
+  lt="exa -T" \
+  lag="exa -lha --git"
+
+# docker
+# docker_status="$(sv check docker)"
+# if [[ "${docker_status#*: }"  = run* ]]; then
+    alias dps="docker ps --format \"{{.ID}}: {{.Names}} {{.Ports}}\""
+    alias drs="docker rm `docker ps --no-trunc -aq`"
+    alias dri="docker rmi $(docker images --format \"{{.ID}}\")"
+    alias dc="docker-compose"
+# fi
+
+# tmux
+alias tmux='tmux -2' # give -2 flag to tmux so it runs with 256 colors
+alias tbase='tmux a -t base'
+alias tnbase='tmux new -s base'
+alias tvs='tmux a -t vscode'
+alias tnvs='tmux new -s vscode'
+
+if [[ -f .env ]]; then
+    alias dotenv=". ./.env"
+else
+    alias dotenv="echo No dotenv file"
+fi
+
+# git aliases
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc_plugins/git.plugin.sh" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc_plugins/git.plugin.sh"
+
+# psql
+alias psql="PAGER='pspg -s 6 --no-mouse' psql"
