@@ -53,13 +53,12 @@ alias ls="exa" \
   lag="exa -lha --git"
 
 # docker
-# docker_status="$(sv check docker)"
-# if [[ "${docker_status#*: }"  = run* ]]; then
+if [[ $(systemctl is-active docker) == 'active' ]]; then
     alias dps="docker ps --format \"{{.ID}}: {{.Names}} {{.Ports}}\""
     alias drs="docker rm `docker ps --no-trunc -aq`"
     alias dri="docker rmi $(docker images --format \"{{.ID}}\")"
     alias dc="docker-compose"
-# fi
+fi
 
 # tmux
 alias tmux='tmux -2' # give -2 flag to tmux so it runs with 256 colors

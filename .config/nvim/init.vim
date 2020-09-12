@@ -59,7 +59,11 @@ vnoremap > >gv
 set autoread
 au CursorHold * checktime
 
+" Disables automatic commenting on newline:
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
 " autocmd BufWritePost *sxhkdrc !pkill -USR1 sxhkd
+autocmd BufWritePost ~/.local/src/dwmblocks/config.h !cd ~/.local/src/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
 
 if !exists('g:vscode')
     source ~/.config/nvim/plugins-cfg.vim
