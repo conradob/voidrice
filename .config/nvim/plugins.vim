@@ -18,6 +18,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'kassio/neoterm'
 Plug 'jiangmiao/auto-pairs'
+Plug 't9md/vim-textmanip'
 
 " ui
 Plug 'romainl/apprentice'
