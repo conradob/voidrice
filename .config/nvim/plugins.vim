@@ -18,7 +18,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'kassio/neoterm'
 Plug 'jiangmiao/auto-pairs'
-Plug 't9md/vim-textmanip'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'alvan/vim-closetag'
+Plug 'matze/vim-move'
 
 " ui
 Plug 'romainl/apprentice'
@@ -34,7 +36,9 @@ Plug 'elzr/vim-json'
 Plug 'sheerun/vim-polyglot'
 
 " js
-Plug 'xabikos/vscode-javascript'
+" Plug 'xabikos/vscode-javascript'
+Plug 'dsznajder/vscode-es7-javascript-react-snippets', { 'do': 'yarn install --frozen-lockfile && yarn compile' }
+
 
 " c#
 Plug 'omnisharp/omnisharp-vim'

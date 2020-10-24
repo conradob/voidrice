@@ -143,5 +143,8 @@ Please run:
 and replace \`libxft\`"
 fi
 
+# Load gopath bin dir
+export PATH="$PATH:$GOPATH/bin"
+
 # Switch escape and caps if tty and no passwd required:
 sudo -n loadkeys ${XDG_DATA_HOME:-$HOME/.local/share}/larbs/ttymaps.kmap 2>/dev/null

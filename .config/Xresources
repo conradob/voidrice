@@ -5,7 +5,7 @@
 *.font: monospace:size=10
 
 /* !! rare-green: */
-*.color0: #020C0A
+*.color0: #222222
 *.color1: #0E7346
 *.color2: #018E3D
 *.color3: #029246
@@ -21,7 +21,7 @@
 *.color13: #1BB45F
 *.color14: #1CCB62
 *.color15: #a0e4b2
-*.color256: #020C0A
+*.color256: #222222
 *.color257: #a0e4b2
-*.foreground: #020C0A
-*.background: #a0e4b2
+*.foreground: #222222
+*.background: #a0e4b3

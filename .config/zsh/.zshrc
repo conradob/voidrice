@@ -2,7 +2,7 @@
 
 # Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
-PS1="%B%{$fg[red]%}[%{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+PS1="%B%{$fg[blue]%}[%{$fg[magenta]%}%~%{$fg[blue]%}]%{$reset_color%}$%b "
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
 
@@ -34,7 +34,7 @@ fpath=("${XDG_CONFIG_HOME:-$HOME/.config}/zsh" $fpath)
 setopt prompt_subst
 GIT_PS1_SHOWDIRTYSTATE=true
 source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/git-prompt.sh"
-export RPROMPT=$'%B%{$fg[red]%}[%{$fg[magenta]%}$(__git_ps1 "%s")%{$fg[red]%}]%{$reset_color%}'
+export RPROMPT=$'%B%{$fg[blue]%}[%{$fg[magenta]%}$(__git_ps1 "%s")%{$fg[blue]%}]%{$reset_color%}'
 
 # vi mode
 bindkey -v

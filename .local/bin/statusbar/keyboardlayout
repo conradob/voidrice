@@ -1,0 +1,12 @@
+#!/bin/sh
+
+switchlayout() { setxkbmap -query | grep -q 'us' && setxkbmap gb || setxkbmap us; }
+
+case $BLOCK_BUTTON in
+	1) switchlayout; pkill -RTMIN+4 dwmblocks ;;
+	3) notify-send "Switch layout between US and GB." ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+layout=$(setxkbmap -query | grep layout)
+echo "  ${layout##* }"

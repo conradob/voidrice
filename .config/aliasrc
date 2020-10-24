@@ -78,3 +78,6 @@ fi
 
 # psql
 alias psql="PAGER='pspg -s 6 --no-mouse' psql"
+
+# clear
+alias cc="clear && tmux info &> /dev/null && tmux clear-history"

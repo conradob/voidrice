@@ -63,7 +63,16 @@ au CursorHold * checktime
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " autocmd BufWritePost *sxhkdrc !pkill -USR1 sxhkd
+autocmd BufWritePost ~/.local/src/dwm/config.h !cd ~/.local/src/dwm/; sudo make install && { kill -HUP $(pidof -s dwm) }
+
+" autocmd BufWritePost *sxhkdrc !pkill -USR1 sxhkd
 autocmd BufWritePost ~/.local/src/dwmblocks/config.h !cd ~/.local/src/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
+
+" Save file as sudo on files that require root permission
+cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
+
+" Run xrdb whenever Xdefaults or Xresources are updated.
+autocmd BufWritePost *Xresources,*Xdefaults !xrdb %
 
 if !exists('g:vscode')
     source ~/.config/nvim/plugins-cfg.vim

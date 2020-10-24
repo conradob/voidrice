@@ -1,0 +1,10 @@
+[Unit]
+Description=Redshift
+
+[Service]
+ExecStart=/usr/bin/redshift
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=default.target

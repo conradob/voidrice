@@ -133,7 +133,7 @@ let g:startify_session_before_save = [
 
 " fzf
 nnoremap <c-p> :GFiles<cr>
-" nnoremap <c-P> :Buffers<cr>
+nnoremap <leader>bl :Buffers<cr>
 
 " comenter
 let g:NERDSpaceDelims = 1
@@ -238,10 +238,10 @@ vmap <leader>f <Plug>(coc-format-selected)
 let g:OmniSharp_server_stdio = 1
 
 " coc-jest
-command! -nargs=0 Jest        :call CocAction('runCommand', 'jest.projectTest')
-command! -nargs=0 JestCurrent :call CocAction('runCommand', 'jest.fileTest', ['%'])
-command! JestInit             :call CocAction('runCommand', 'jest.init')
+command! -nargs=0 Jest :call  CocAction('runCommand', 'jest.projectTest')
+command! -nargs=0 JestCurrent :call  CocAction('runCommand', 'jest.fileTest', ['%'])
 nnoremap <leader>te :call CocAction('runCommand', 'jest.singleTest')<CR>
+command! JestInit :call CocAction('runCommand', 'jest.init')
 
 " coc-git
 " navigate chunks of current buffer
@@ -273,6 +273,11 @@ omap ac <Plug>(coc-classobj-a)
 
 nnoremap <silent> <space>g  :<C-u>CocList --normal gstatus<CR>
 
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of language server.
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
+
 " Vimwiki
 let g:vimwiki_list = [{'path': '~/Documents/Wiki/',
     \ 'syntax': 'markdown', 'ext': '.md'}]
@@ -296,11 +301,20 @@ nmap <Space>d <Plug>(textmanip-duplicate-down)
 xmap <Space>D <Plug>(textmanip-duplicate-up)
 nmap <Space>D <Plug>(textmanip-duplicate-up)
 
-xmap <C-j> <Plug>(textmanip-move-down)
-xmap <C-k> <Plug>(textmanip-move-up)
-xmap <C-h> <Plug>(textmanip-move-left)
-xmap <C-l> <Plug>(textmanip-move-right)
+xmap <C-J> <Plug>(textmanip-move-down)
+xmap <C-K> <Plug>(textmanip-move-up)
+xmap <C-H> <Plug>(textmanip-move-left)
+xmap <C-L> <Plug>(textmanip-move-right)
 
 " toggle insert/replace with <F10>
 nmap <F10> <Plug>(textmanip-toggle-mode)
 xmap <F10> <Plug>(textmanip-toggle-mode)
+
+" closetag
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.js'
+let g:closetag_emptyTags_caseSensitive = 1
+let g:closetag_close_shortcut = '<leader>>'
+
+" move
+let g:move_key_modifier = 'C'
