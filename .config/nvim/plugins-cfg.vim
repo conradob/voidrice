@@ -23,6 +23,7 @@ function! MyHighlights() abort
     hi VimwikiHeader5 guifg=#794000
     hi VimwikiHeader6 guifg=#794000
     hi CocCodeLens guifg=#486056
+    hi IncSearch guifg=#343d46 guibg=#99c794 gui=bold
     hi link jsxPunct Normal
     hi link jsxBraces Normal
     hi link jsxTag Normal
@@ -33,6 +34,7 @@ augroup MyColors
     autocmd ColorScheme * call MyHighlights()
 augroup END
 colorscheme apprentice
+
 
 " airline
 let g:airline#extensions#tabline#enabled = 1
@@ -140,11 +142,14 @@ let g:NERDSpaceDelims = 1
 let g:NERDDefaultAlign = 'left'
 
 " identline
+function! IdentIgnoreBuffers()
+    return ['help', 'nerdtree', 'startify', 'tagbar', 'vimfiler', 'markdown', 'minimap', 'vimwiki', 'coc_explorer', '__vista__']
+endfunction
 let g:indentLine_char = '┊'
 let g:indentLine_leadingSpaceEnabled='1'
-let g:indentLine_fileTypeExclude = ['help', 'nerdtree', 'startify', 'tagbar', 'vimfiler', 'markdown', 'minimap', 'vimwiki']
-let g:indentLine_bufTypeExclude = ['help', 'nerdtree', 'startify', 'tagbar', 'vimfiler', 'markdown', 'minimap', 'vimwiki']
-let g:indentLine_bufNameExclude = ['help', 'NERD_tree.*', 'startify', 'tagbar', 'vimfiler', 'markdown', 'minimap', 'vimwiki']
+let g:indentLine_fileTypeExclude = ['help', 'nerdtree', 'startify', 'tagbar', 'vimfiler', 'markdown', 'minimap', 'vimwiki', 'coc_explorer', '__vista__']
+let g:indentLine_bufTypeExclude = ['help', 'nerdtree', 'startify', 'tagbar', 'vimfiler', 'markdown', 'minimap', 'vimwiki', 'coc_explorer', '__vista__']
+let g:indentLine_bufNameExclude = ['help', 'NERD_tree.*', 'startify', 'tagbar', 'vimfiler', 'markdown', 'minimap', 'vimwiki', 'coc_explorer', '__vista__']
 let g:indentLine_leadingSpaceChar='⋅'
 let g:indentLine_noConcealCursor=1
 
@@ -158,12 +163,43 @@ endif
 nmap <leader>Pd :autocmd! BufWritePre<CR>
 nmap <leader>Pe :autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx call CocAction('runCommand', 'prettier.formatFile')<CR>
 
+" move
+let g:move_key_modifier = 'C'
+
+" vista
+nmap <silent> <A-t> :Vista!!<CR>
+let g:vista_default_executive = 'coc'
+let g:vista_icon_indent = ["╰─ ", "├─ "]
+
+" textmanip
+xmap <Space>d <Plug>(textmanip-duplicate-down)
+nmap <Space>d <Plug>(textmanip-duplicate-down)
+xmap <Space>D <Plug>(textmanip-duplicate-up)
+nmap <Space>D <Plug>(textmanip-duplicate-up)
+
+xmap <C-J> <Plug>(textmanip-move-down)
+xmap <C-K> <Plug>(textmanip-move-up)
+xmap <C-H> <Plug>(textmanip-move-left)
+xmap <C-L> <Plug>(textmanip-move-right)
+
+" toggle insert/replace with <F10>
+nmap <F10> <Plug>(textmanip-toggle-mode)
+xmap <F10> <Plug>(textmanip-toggle-mode)
+
+" closetag
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.js'
+let g:closetag_emptyTags_caseSensitive = 1
+let g:closetag_close_shortcut = '<leader>>'
+
 " coc
 let g:coc_snippet_next = '<tab>'
 let g:coc_global_extensions = [
+\ 'coc-bookmark',
 \ 'coc-cspell-dicts',
 \ 'coc-css',
 \ 'coc-eslint',
+\ 'coc-explorer',
 \ 'coc-git',
 \ 'coc-highlight',
 \ 'coc-html',
@@ -295,26 +331,22 @@ map <Leader>rsa :call RunAllSpecs()<CR>
 
 let g:rspec_command = "vertical T bundle exec rspec {spec}"
 
-" textmanip
-xmap <Space>d <Plug>(textmanip-duplicate-down)
-nmap <Space>d <Plug>(textmanip-duplicate-down)
-xmap <Space>D <Plug>(textmanip-duplicate-up)
-nmap <Space>D <Plug>(textmanip-duplicate-up)
+" explorer
+let g:coc_explorer_global_presets = {
+\   'floatingLeftside': {
+\     'position': 'floating',
+\     'floating-position': 'left-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   }
+\ }
+nmap <silent> <A-e> :CocCommand explorer --toggle <CR>
+nmap <silent> <A-f> :CocCommand explorer --preset floatingLeftside<CR>
 
-xmap <C-J> <Plug>(textmanip-move-down)
-xmap <C-K> <Plug>(textmanip-move-up)
-xmap <C-H> <Plug>(textmanip-move-left)
-xmap <C-L> <Plug>(textmanip-move-right)
-
-" toggle insert/replace with <F10>
-nmap <F10> <Plug>(textmanip-toggle-mode)
-xmap <F10> <Plug>(textmanip-toggle-mode)
-
-" closetag
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
-let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.js'
-let g:closetag_emptyTags_caseSensitive = 1
-let g:closetag_close_shortcut = '<leader>>'
-
-" move
-let g:move_key_modifier = 'C'
+" bookmark
+nmap <A-b> <Plug>(coc-bookmark-toggle)
+nmap <A-B> <Plug>(coc-bookmark-annotate)
+nmap <Leader>bj <Plug>(coc-bookmark-next)
+nmap <Leader>bk <Plug>(coc-bookmark-prev)
+nmap <Leader>bc :CocCommand bookmark.clearForCurrentFile<CR>
+nmap <Leader>bC :CocCommand bookmark.clearForAllFiles<CR>

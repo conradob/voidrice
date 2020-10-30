@@ -21,6 +21,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'alvan/vim-closetag'
 Plug 'matze/vim-move'
+Plug 'liuchengxu/vista.vim'
 
 " ui
 Plug 'romainl/apprentice'
