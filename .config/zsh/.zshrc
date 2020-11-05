@@ -2,13 +2,13 @@
 
 # Enable colors and change prompt:
 autoload -U colors && colors	# Load colors
-PS1="%B%{$fg[blue]%}[%{$fg[magenta]%}%~%{$fg[blue]%}]%{$reset_color%}$%b "
+PS1="%B%{$fg[white]%}[%{$fg[magenta]%}%~%{$fg[white]%}]%{$reset_color%}$%b "
 setopt autocd		# Automatically cd into typed directory.
 stty stop undef		# Disable ctrl-s to freeze terminal.
 
 # History in cache directory:
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=1000000000
+SAVEHIST=$HISTSIZE
 HISTFILE=~/.cache/zsh/history
 
 # Appends every command to the history file once it is executed
@@ -34,7 +34,7 @@ fpath=("${XDG_CONFIG_HOME:-$HOME/.config}/zsh" $fpath)
 setopt prompt_subst
 GIT_PS1_SHOWDIRTYSTATE=true
 source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/git-prompt.sh"
-export RPROMPT=$'%B%{$fg[blue]%}[%{$fg[magenta]%}$(__git_ps1 "%s")%{$fg[blue]%}]%{$reset_color%}'
+export RPROMPT=$'%B%{$fg[white]%}[%{$fg[magenta]%}$(__git_ps1 "%s")%{$fg[white]%}]%{$reset_color%}'
 
 # vi mode
 bindkey -v
