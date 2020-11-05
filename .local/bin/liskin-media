@@ -101,6 +101,16 @@ action_playpause() { p=$(get_mpris_smart); playerctl -p "$p" play-pause; }
 action_stop() { playerctl -a stop; }
 action_next() { p=$(get_mpris_playing); playerctl -p "$p" next; }
 action_prev() { p=$(get_mpris_playing); playerctl -p "$p" previous; }
+action_current() {
+  p=$(get_mpris_playing);
+  artist=$(playerctl -p "$p" metadata artist);
+  title=$(playerctl -p "$p" metadata title);
+  if [ -z "$artist" ]; then
+    echo $title
+  else
+    echo "$artist - $title"
+  fi
+}
 
 if [[ $(type -t "action_${1-}") == function ]]; then
 	"action_$1" "${@:2}"
