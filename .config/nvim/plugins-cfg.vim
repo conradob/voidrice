@@ -1,21 +1,39 @@
 call plug#load('vim-numbertoggle')
 
+" treesitter
+lua << EOF
+require('nvim-treesitter.configs').setup {
+  ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = false,
+  },
+}
+require('telescope').setup{
+  defaults = {
+    file_ignore_patterns = { "package-lock.json", "yarn.*", "yalc.lock" },
+  }
+}
+EOF
+
 " theme
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 filetype plugin on
 syntax on
 set termguicolors
 function! MyHighlights() abort
-    hi Pmenu ctermbg=238 ctermfg=250 cterm=NONE guibg=#1c1c1c guifg=#bcbcbc gui=NONE
+    " hi Pmenu ctermbg=238 ctermfg=250 cterm=NONE guibg=#1c1c1c guifg=#bcbcbc gui=NONE
+    hi Pmenu ctermbg=238 ctermfg=250 cterm=NONE guibg=#1c1c1c
     hi CocErrorSign ctermfg=Red guibg=#1c1c1c guifg=#ff0000
     hi CocWarningSign ctermfg=Brown guibg=#1c1c1c guifg=#ff922b
+    hi CocExplorerDiagnosticError ctermfg=Red guibg=NONE guifg=#ff0000
+    hi CocExplorerDiagnosticWarning ctermfg=Brown guibg=NONE guifg=#ff922b
     hi CocInfoSign ctermfg=Yellow guibg=#1c1c1c guifg=#fab005
     hi CocHintSign ctermfg=Blue guibg=#1c1c1c guifg=#15aabf
     hi GitAddedSign guibg=#1c1c1c guifg=#87AF87
-    hi GitRemovedSign guibg=#1c1c1c guifg=#ff4040
-    hi GitChangedSign guibg=#1c1c1c guifg=#a132f0
-    hi Function ctermbg=NONE ctermfg=187 cterm=NONE guibg=NONE guifg=#d7d787 gui=NONE
-    hi MatchParen ctermbg=234 ctermfg=187 cterm=NONE guibg=#1c1c1c guifg=#d7d787 gui=NONE
+    hi GitRemovedSign guibg=#1c1c1c guifg=#DBBFA9
+    hi GitChangedSign guibg=#1c1c1c guifg=#879B9B
+    " hi Function ctermbg=NONE ctermfg=187 cterm=NONE guibg=NONE guifg=#d7d787 gui=NONE
+    " hi MatchParen ctermbg=234 ctermfg=187 cterm=NONE guibg=#1c1c1c guifg=#d7d787 gui=NONE
     hi VimwikiHeader1 guifg=#FF8700
     hi VimwikiHeader2 guifg=#C66800
     hi VimwikiHeader3 guifg=#9B5200
@@ -24,9 +42,9 @@ function! MyHighlights() abort
     hi VimwikiHeader6 guifg=#794000
     hi CocCodeLens guifg=#486056
     hi IncSearch guifg=#343d46 guibg=#99c794 gui=bold
-    hi link jsxPunct Normal
-    hi link jsxBraces Normal
-    hi link jsxTag Normal
+    " hi link jsxPunct Normal
+    " hi link jsxBraces Normal
+    " hi link jsxTag Normal
 endfunction
 
 augroup MyColors
@@ -38,6 +56,7 @@ colorscheme apprentice
 
 " airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'jsformatter'
 let g:airline#extensions#tmuxline#enabled = 0
 let g:airline_powerline_fonts = 1
 let g:airline_theme='oceanicnext'
@@ -102,13 +121,6 @@ endif
 nmap <leader>tt :+tabm<CR>
 nmap <leader>tT :-tabm<CR>
 
-" nerdtree
-set encoding=UTF-8
-let NERDTreeShowHidden=1
-let NERDTreeQuitOnOpen=1
-nmap <silent> <leader>1 :NERDTreeToggle<CR>
-nmap <silent> <leader>2 :NERDTreeFind<CR>
-
 " toggle invisible characters
 set invlist
 set list
@@ -134,8 +146,14 @@ let g:startify_session_before_save = [
     \ ]
 
 " fzf
-nnoremap <c-p> :GFiles<cr>
-nnoremap <leader>bl :Buffers<cr>
+" nnoremap <c-p> :GFiles<cr>
+" nnoremap <leader>bl :Buffers<cr>
+
+" telescope
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " comenter
 let g:NERDSpaceDelims = 1
@@ -147,7 +165,7 @@ function! IdentIgnoreBuffers()
 endfunction
 let g:indentLine_char = '┊'
 let g:indentLine_leadingSpaceEnabled='1'
-let g:indentLine_fileTypeExclude = ['help', 'nerdtree', 'startify', 'tagbar', 'vimfiler', 'markdown', 'minimap', 'vimwiki', 'coc_explorer', '__vista__']
+let g:indentLine_fileTypeExclude = ['help', 'nerdtree', 'startify', 'tagbar', 'vimfiler', 'markdown', 'minimap', 'vimwiki', 'coc_explorer', '__vista__', 'json']
 let g:indentLine_bufTypeExclude = ['help', 'nerdtree', 'startify', 'tagbar', 'vimfiler', 'markdown', 'minimap', 'vimwiki', 'coc_explorer', '__vista__']
 let g:indentLine_bufNameExclude = ['help', 'NERD_tree.*', 'startify', 'tagbar', 'vimfiler', 'markdown', 'minimap', 'vimwiki', 'coc_explorer', '__vista__']
 let g:indentLine_leadingSpaceChar='⋅'
@@ -157,9 +175,9 @@ let g:vim_markdown_folding_disabled=1
 
 " formater
 let g:prettier#autoformat = 0
-if filereadable(findfile('.prettierrc', '.;'))
+" if filereadable(findfile('.prettierrc', '.;'))
   autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx call CocAction('runCommand', 'prettier.formatFile')
-endif
+" endif
 nmap <leader>Pd :autocmd! BufWritePre<CR>
 nmap <leader>Pe :autocmd BufWritePre *.ts,*.tsx,*.js,*.jsx call CocAction('runCommand', 'prettier.formatFile')<CR>
 
@@ -187,20 +205,28 @@ nmap <F10> <Plug>(textmanip-toggle-mode)
 xmap <F10> <Plug>(textmanip-toggle-mode)
 
 " closetag
-let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js'
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.js,*ts,*tsx'
 let g:closetag_xhtml_filenames = '*.xhtml,*.jsx,*.js'
 let g:closetag_emptyTags_caseSensitive = 1
-let g:closetag_close_shortcut = '<leader>>'
+" let g:closetag_close_shortcut = '<leader>>'
+
+" rspec
+map <Leader>rst :call RunCurrentSpecFile()<CR>
+map <Leader>rss :call RunNearestSpec()<CR>
+map <Leader>rsl :call RunLastSpec()<CR>
+map <Leader>rsa :call RunAllSpecs()<CR>
+
+let g:rspec_command = "vertical T bundle exec rspec {spec}"
 
 " coc
 let g:coc_snippet_next = '<tab>'
 let g:coc_global_extensions = [
-\ 'coc-bookmark',
 \ 'coc-cspell-dicts',
 \ 'coc-css',
 \ 'coc-eslint',
 \ 'coc-explorer',
 \ 'coc-git',
+\ 'coc-go',
 \ 'coc-highlight',
 \ 'coc-html',
 \ 'coc-jest',
@@ -209,10 +235,13 @@ let g:coc_global_extensions = [
 \ 'coc-marketplace',
 \ 'coc-omnisharp',
 \ 'coc-prettier',
+\ 'coc-pyright',
 \ 'coc-snippets',
 \ 'coc-solargraph',
 \ 'coc-spell-checker',
 \ 'coc-sql',
+\ 'coc-styled-components',
+\ 'coc-tailwindcss',
 \ 'coc-todolist',
 \ 'coc-tslint-plugin',
 \ 'coc-tsserver',
@@ -247,8 +276,8 @@ command! -nargs=0 Prettier      :CocCommand prettier.formatFile
 command! -nargs=0 Format        :call       CocAction('format')
 command! -nargs=0 OR            :call       CocAction('runCommand', 'editor.action.organizeImport')
 command! -nargs=0 SIG           :call       CocActionAsync('showSignatureHelp')
-command! -nargs=? Fold          :call       CocAction('fold', <f-args>)
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+command! -nargs=? Fold          :call       CocAction('fold', <f-args>)
 nmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>ac <Plug>(coc-codeaction)
 nmap <leader>f  <Plug>(coc-format-selected)
@@ -323,25 +352,20 @@ nnoremap <leader>gd :Gdiffsplit!<CR>
 nnoremap gdh :diffget //2<CR>
 nnoremap gdl :diffget //3<CR>
 
-" rspec
-map <Leader>rst :call RunCurrentSpecFile()<CR>
-map <Leader>rss :call RunNearestSpec()<CR>
-map <Leader>rsl :call RunLastSpec()<CR>
-map <Leader>rsa :call RunAllSpecs()<CR>
-
-let g:rspec_command = "vertical T bundle exec rspec {spec}"
-
 " explorer
 let g:coc_explorer_global_presets = {
 \   'floatingLeftside': {
 \     'position': 'floating',
-\     'floating-position': 'left-center',
+\     'floating-position': 'right-center',
 \     'floating-width': 50,
 \     'open-action-strategy': 'sourceWindow',
 \   }
 \ }
-nmap <silent> <A-e> :CocCommand explorer --toggle <CR>
-nmap <silent> <A-f> :CocCommand explorer --preset floatingLeftside<CR>
+nmap <silent> <leader>1 :CocCommand explorer --toggle --position right<CR>
+nmap <silent> <leader>2 :CocCommand explorer --preset floatingLeftside<CR>
+
+" go
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
 " bookmark
 nmap <A-b> <Plug>(coc-bookmark-toggle)

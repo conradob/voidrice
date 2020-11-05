@@ -46,6 +46,8 @@ nmap <silent> <leader>bd :bd!<CR>
 set backspace=indent,eol,start
 
 " Map :W to :w
+:command! Wa wa
+:command! Wa wa
 :command! WQ wq
 :command! Wq wq
 :command! W w
@@ -54,6 +56,10 @@ set backspace=indent,eol,start
 " move code blocks easier
 vnoremap < <gv
 vnoremap > >gv
+
+" zooming window splits
+noremap Zz <c-w>_ \| <c-w>\|
+noremap Zo <c-w>=
 
 " refresh changed content
 set autoread
