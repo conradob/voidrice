@@ -13,7 +13,7 @@ set ignorecase
 set smartcase
 
 "" clean highlight
-map <silent> <Esc> :nohlsearch<CR>
+nnoremap <silent> <Esc> :nohlsearch<CR>
 
 " visual
 filetype plugin indent on
