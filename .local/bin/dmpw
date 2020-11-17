@@ -1,0 +1,21 @@
+#!/bin/sh
+
+onefile() {
+  file_with_path="$1"
+  filename_with_extension=${file_with_path##*/}
+  filename=${filename_with_extension%%.mpsites.json*}
+
+  site=$(cat "$file_with_path" | \
+    jq -r ".sites | keys | @sh" | tr -d "[],'" | \
+    tr " " "\n" | \
+    dmenu -i -p "Select site:")
+
+  copy_command="xclip -r -selection clip && notify-send \"Copied password for $site\""
+  [ -n "$site" ] && "$TERMINAL" -c dmpw -e sh -c "_copy() { nohup sh -c '$copy_command' >/dev/null 2>&1 ; };
+    mpw -q -u '$filename' $site | _copy"
+}
+
+allfiles=$(command ls -p $HOME/.mpw.d/*.json)
+
+[ "$(echo "$allfiles" | wc -l)" -lt 2 ] &&
+  onefile "$allfiles"; exit;
