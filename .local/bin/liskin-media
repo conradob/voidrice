@@ -111,6 +111,9 @@ action_current() {
     echo "$artist - $title"
   fi
 }
+action_media() {
+  echo $(get_mpris_playing)
+}
 
 if [[ $(type -t "action_${1-}") == function ]]; then
 	"action_$1" "${@:2}"
