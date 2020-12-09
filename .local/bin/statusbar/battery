@@ -45,8 +45,8 @@ do
 	status=$(cat "$battery"/status 2>/dev/null) || break
   getIcon icon $capacity $status
 
-  [ "$capacity" -le 15 ] && warn=" ❗"
+  [ "$capacity" -le 15 ] && warn="❗"
 
-	printf "%s%s%s%% " "$icon " "$warn" "$capacity"
+	printf "%s%s%s%% " "$warn" "$icon " "$capacity"
 	unset warn
 done | sed 's/ *$//'
