@@ -2,6 +2,7 @@ current_branch() {
   git branch | sed -n -e 's/^\* \(.*\)/\1/p'
 }
 
+
 alias g='git'
 
 alias ga='git add'
@@ -59,13 +60,14 @@ alias gdt='git diff-tree --no-commit-id --name-only -r'
 alias gdw='git diff --word-diff'
 
 alias gfo='git fetch origin'
+alias gfco='_fetch_and_checkout() { git fetch origin $1; git checkout $1; }; _fetch_and_checkout'
 
 alias ggpull='git pull origin "$(current_branch)"'
 alias ggpush='git push origin "$(current_branch)"'
 alias ggpushf='git push --force-with-lease origin "$(current_branch)"'
 
 alias gri="git rebase --interactive --autosquash"
-alias gria="git rebase --interactive --autosquash HEAD~2"
+alias gria="git commit --fixup HEAD && git rebase --interactive --autosquash HEAD~2"
 alias ggrep="git grep -n --break --head"
 
 alias gl='git pull'
