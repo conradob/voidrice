@@ -76,8 +76,14 @@ fi
 # git aliases
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc_plugins/git.plugin.sh" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc_plugins/git.plugin.sh"
 
+# projects aliases
+[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc_plugins/projects.plugin.sh" ] && source "${XDG_CONFIG_HOME:-$HOME/.config}/aliasrc_plugins/projects.plugin.sh"
+
 # psql
 alias psql="PAGER='pspg -s 6 --no-mouse' psql"
 
 # clear
 alias cc="clear && tmux info &> /dev/null && tmux clear-history"
+
+# k9s
+alias kctx="kubectx"

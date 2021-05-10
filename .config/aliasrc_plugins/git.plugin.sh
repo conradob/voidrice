@@ -69,6 +69,7 @@ alias ggpushf='git push --force-with-lease origin "$(current_branch)"'
 alias gri="git rebase --interactive --autosquash"
 alias gria="git commit --fixup HEAD && git rebase --interactive --autosquash HEAD~2"
 alias ggrep="git grep -n --break --head"
+alias gfri='_fixup_and_rebase() { git commit --fixup $1; git rebase -i --autosquash $1~; }; _fixup_and_rebase'
 
 alias gl='git pull'
 alias glg='git log --stat'
