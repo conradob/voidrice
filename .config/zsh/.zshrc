@@ -34,7 +34,14 @@ fpath=("${XDG_CONFIG_HOME:-$HOME/.config}/zsh" $fpath)
 setopt prompt_subst
 GIT_PS1_SHOWDIRTYSTATE=true
 source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/git-prompt.sh"
-export RPROMPT=$'%B%{$fg[white]%}[%{$fg[magenta]%}$(__git_ps1 "%s")%{$fg[white]%}]%{$reset_color%}'
+source '/opt/kube-ps1/kube-ps1.sh'
+
+if [ -n "$kube_ps1" ] 
+then
+    export RPROMPT=$'%B%{$fg[white]%}[%{$fg[magenta]%}$(kube_ps1)%{$fg[white]%}]%{$reset_color%}%B%{$fg[white]%}[%{$fg[magenta]%}$(__git_ps1 "%s")%{$fg[white]%}]%{$reset_color%}'
+else
+    export RPROMPT=$'%B%{$fg[white]%}[%{$fg[magenta]%}$(__git_ps1 "%s")%{$fg[white]%}]%{$reset_color%}'
+fi
 
 # vi mode
 bindkey -v
