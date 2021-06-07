@@ -1,6 +1,6 @@
 #!/bin/sh
 
-switchlayout() { setxkbmap -query | grep -q 'us' && setxkbmap gb || setxkbmap us; }
+switchlayout() { setxkbmap -query | grep -q 'us' && setxkbmap gb || setxkbmap us && remaps; }
 
 case $BLOCK_BUTTON in
 	1) switchlayout; pkill -RTMIN+4 dwmblocks ;;
